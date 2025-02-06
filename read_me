@@ -1,0 +1,64 @@
+# Open Source B2B Marketing Attribution Model for Salesforce Pipeline [SQL]
+
+## Overview & Objectives
+This account-based attribution model is designed to assess the impact of various marketing campaigns on lead generation and sales opportunities within Salesforce data. It:
+- Scores leads based on campaign attributes and priority levels.
+- Computes a 90-day rolling score per account.
+- Uses adjustable thresholds to refine analysis.
+- Identifies top campaigns for each account daily.
+- Links scored leads to related opportunities based on timing.
+
+## Minimum Data Requirements
+
+### 1. Marketing/Lead Data  
+**Table Name:** `[lead_id_campaign_name_test]`  
+**Required Fields:**  
+- **[Lead_Created_Date__c]:** Date the lead was created.  
+- **[Campaign_Name]:** Name of the marketing campaign.  
+- **[Priority]:** Lead priority (e.g., 'Priority 1', 'Priority 2').  
+- **[Account_ID]:** Identifier linking the lead to an account.  
+- *Optional:* `[Email]`, `[Country_Name__c]`, `[Job_Title]`.
+
+### 2. Sales/Opportunity Data  
+**Table Name:** `[Opportunity]`  
+**Required Fields:**  
+- **[Id]:** Unique identifier for the opportunity.  
+- **[Name]:** Opportunity name.  
+- **[CreatedDate]:** Date the opportunity was created.  
+- **[Annual_Contract_Value__c]:** Financial metric.  
+- **[AccountId]:** Account identifier for joining with marketing data.  
+- **[Type_of_Sale__c]:** Type of sale (e.g., 'New', 'Upsell', 'Add-On', 'New Business').
+
+## How It Works
+The SQL script uses multiple Common Table Expressions (CTEs) to modularize the logic:
+
+1. **Date Series:** Generates a timeline based on distinct lead creation dates (plus the current date).  
+2. **Scored Leads:** Assigns point values to leads based on campaign type and priority.  
+3. **Rolling Scores:** Computes cumulative scores for each account over a rolling 90-day window.  
+4. **Closest Campaigns:** Ranks campaigns for each account and date based on priority and timing.  
+5. **Final Scores & Linked Opportunities:** Aggregates data, applies thresholds, and links scored leads to relevant opportunities.
+
+## Setup & Usage
+
+1. **Save the File:**  
+   Save the SQL script (provided with this README) as `salesforce_attribution_model.sql`.
+
+2. **Environment:**  
+   Ensure you have SQL Server installed with access to the required Salesforce data.
+
+3. **Execution:**  
+   Open the file in your SQL client (e.g., SQL Server Management Studio or Visual Studio Code with SQL extensions) and run the script.  
+   *Note:* Adjust the date range in the final `SELECT` statement as needed.
+
+4. **Customization:**  
+   The script contains adjustable thresholds and parameters, allowing the marketing analytics team to refine scoring based on ongoing analysis.
+
+## Benefits
+This open-source model enables organizations to quantify marketing’s impact on pipeline growth by linking campaign efforts to revenue opportunities. It supports data-driven decision-making and resource optimization.
+
+## License
+This project is licensed under the MIT Open Source License.
+
+## Author
+Saquib Hussain  
+(Developed from scratch – December 2024)
